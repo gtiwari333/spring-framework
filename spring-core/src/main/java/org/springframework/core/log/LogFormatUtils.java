@@ -104,9 +104,23 @@ public abstract class LogFormatUtils {
 	 *   }
 	 * }
 	 * </pre>
+	 * <p>The outer {@link Supplier} is a non-capturing lambda that the JVM
+	 * caches as a singleton. The inner {@code Function<Boolean, String>}
+	 * is only created when {@link Log#isDebugEnabled()} returns {@code true},
+	 * avoiding the unconditional lambda allocation that occurs with the
+	 * deprecated {@link #traceDebug(Log, Function)} overload.
+	 * <p>Usage:
+	 * <pre class="code">
+	 * LogFormatUtils.traceDebug(logger, () -&gt; traceOn -&gt; {
+	 *     String formatted = LogFormatUtils.formatValue(value, !traceOn);
+	 *     return "Writing [" + formatted + "]";
+	 * });
+	 * </pre>
 	 * @param logger the logger to use to log the message
-	 * @param messageFactory function that accepts a boolean set to the value
-	 * of {@link Log#isTraceEnabled()}
+	 * @param messageFactory a supplier of a function that accepts a boolean
+	 * set to the value of {@link Log#isTraceEnabled()} and returns the
+	 * formatted log message
+	 * @since 7.2
 	 */
 	public static void traceDebug(Log logger, Supplier<Function<Boolean, String>> messageFactory) {
 		if (logger.isDebugEnabled()) {
@@ -114,8 +128,33 @@ public abstract class LogFormatUtils {
 			String logMessage = messageFactory.get().apply(traceEnabled);
 			if (traceEnabled) {
 				logger.trace(logMessage);
+			} else {
+				logger.debug(logMessage);
 			}
-			else {
+		}
+	}
+
+	/**
+	 * Deprecated variant of {@link #traceDebug(Log, Supplier)} that accepts
+	 * a capturing {@link Function} directly. This allocates the lambda
+	 * unconditionally on every call, before the {@link Log#isDebugEnabled()}
+	 * check runs, because Java evaluates method arguments before invoking
+	 * the method.
+	 *
+	 * @param logger         the logger to use to log the message
+	 * @param messageFactory function that accepts a boolean set to the value
+	 *                       of {@link Log#isTraceEnabled()}
+	 * @deprecated since XXX in favor of {@link #traceDebug(Log, Supplier)}
+	 * which avoids unconditional lambda allocation when debug logging is off
+	 */
+	@Deprecated(forRemoval = false)
+	public static void traceDebug(Log logger, Function<Boolean, String> messageFactory) {
+		if (logger.isDebugEnabled()) {
+			boolean traceEnabled = logger.isTraceEnabled();
+			String logMessage = messageFactory.apply(traceEnabled);
+			if (traceEnabled) {
+				logger.trace(logMessage);
+			} else {
 				logger.debug(logMessage);
 			}
 		}
