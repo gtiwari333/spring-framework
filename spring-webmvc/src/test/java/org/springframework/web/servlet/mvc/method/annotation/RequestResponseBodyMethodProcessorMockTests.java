@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -330,6 +331,50 @@ class RequestResponseBodyMethodProcessorMockTests {
 		verify(stringMessageConverter).write(eq(body), eq(MediaType.TEXT_HTML), isA(HttpOutputMessage.class));
 	}
 
+
+	@Test // gh-XXXXX
+	void getAcceptableMediaTypesShortCircuitsForSingleConcreteProducibleType() throws Exception {
+		String body = "Foo";
+		servletRequest.setAttribute(HandlerMapping.PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE,
+				Collections.singleton(MediaType.APPLICATION_JSON));
+
+		given(stringMessageConverter.canWrite(String.class, MediaType.APPLICATION_JSON)).willReturn(true);
+
+		processor.handleReturnValue(body, returnTypeString, mavContainer, webRequest);
+
+		assertThat(mavContainer.isRequestHandled()).isTrue();
+		verify(stringMessageConverter).write(eq(body), eq(MediaType.APPLICATION_JSON), isA(HttpOutputMessage.class));
+	}
+
+	@Test // gh-XXXXX
+	void getAcceptableMediaTypesFallsThroughWhenAttributeNotSet() throws Exception {
+		String body = "Foo";
+		MediaType accepted = MediaType.TEXT_PLAIN;
+		servletRequest.addHeader("Accept", accepted.toString());
+		// No PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE set — should fall through to content negotiation
+
+		given(stringMessageConverter.canWrite(String.class, accepted)).willReturn(true);
+
+		processor.handleReturnValue(body, returnTypeString, mavContainer, webRequest);
+
+		assertThat(mavContainer.isRequestHandled()).isTrue();
+		verify(stringMessageConverter).write(eq(body), eq(accepted), isA(HttpOutputMessage.class));
+	}
+
+	@Test // gh-XXXXX
+	void getAcceptableMediaTypesFallsThroughWhenMultipleProducibleTypes() throws Exception {
+		String body = "Foo";
+		servletRequest.setAttribute(HandlerMapping.PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE,
+				Set.of(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML));
+		servletRequest.addHeader("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+		given(stringMessageConverter.canWrite(String.class, MediaType.APPLICATION_JSON)).willReturn(true);
+
+		processor.handleReturnValue(body, returnTypeString, mavContainer, webRequest);
+
+		assertThat(mavContainer.isRequestHandled()).isTrue();
+		verify(stringMessageConverter).write(eq(body), eq(MediaType.APPLICATION_JSON), isA(HttpOutputMessage.class));
+	}
 
 	@Test
 	void handleReturnValueNotAcceptable() {
