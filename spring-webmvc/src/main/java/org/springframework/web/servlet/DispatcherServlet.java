@@ -879,7 +879,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	private void logRequest(HttpServletRequest request) {
-		LogFormatUtils.traceDebug(logger, traceOn -> {
+		LogFormatUtils.traceDebug(logger, () -> traceOn -> {
 			String params;
 			String contentType = request.getContentType();
 			if (StringUtils.startsWithIgnoreCase(contentType, "multipart/")) {

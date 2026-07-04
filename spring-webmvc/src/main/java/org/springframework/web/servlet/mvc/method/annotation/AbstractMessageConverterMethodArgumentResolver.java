@@ -237,7 +237,7 @@ public abstract class AbstractMessageConverterMethodArgumentResolver implements 
 
 		MediaType selectedContentType = contentType;
 		Object theBody = body;
-		LogFormatUtils.traceDebug(logger, traceOn -> {
+		LogFormatUtils.traceDebug(logger, () -> traceOn -> {
 			String formatted = LogFormatUtils.formatValue(theBody, !traceOn);
 			return "Read \"" + selectedContentType + "\" to [" + formatted + "]";
 		});

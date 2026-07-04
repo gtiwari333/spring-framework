@@ -79,7 +79,7 @@ public final class CharSequenceEncoder extends AbstractEncoder<CharSequence> {
 			ResolvableType valueType, @Nullable MimeType mimeType, @Nullable Map<String, Object> hints) {
 
 		if (!Hints.isLoggingSuppressed(hints)) {
-			LogFormatUtils.traceDebug(logger, traceOn -> {
+			LogFormatUtils.traceDebug(logger, () -> traceOn -> {
 				String formatted = LogFormatUtils.formatValue(charSequence, !traceOn);
 				return Hints.getLogPrefix(hints) + "Writing " + formatted;
 			});

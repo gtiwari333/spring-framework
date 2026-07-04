@@ -115,7 +115,7 @@ public abstract class ExchangeFunctions {
 		}
 
 		private void logRequest(ClientRequest request) {
-			LogFormatUtils.traceDebug(logger, traceOn ->
+			LogFormatUtils.traceDebug(logger, () -> traceOn ->
 					request.logPrefix() + "HTTP " +
 							WebClientUtils.getRequestDescription(request.method(), request.url()) +
 							(traceOn ? ", headers=" + formatHeaders(request.headers()) : "")
@@ -127,7 +127,7 @@ public abstract class ExchangeFunctions {
 		}
 
 		private void logResponse(ClientHttpResponse response, String logPrefix) {
-			LogFormatUtils.traceDebug(logger, traceOn -> logPrefix + "Response " + response.getStatusCode() +
+			LogFormatUtils.traceDebug(logger, () -> traceOn -> logPrefix + "Response " + response.getStatusCode() +
 					(traceOn ? ", headers=" + formatHeaders(response.getHeaders()) : ""));
 		}
 

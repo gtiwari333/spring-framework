@@ -928,7 +928,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 			Assert.state(resultContext != null && resultContext.length > 0, "Missing result context");
 			mavContainer = (ModelAndViewContainer) resultContext[0];
 			asyncManager.clearConcurrentResult();
-			LogFormatUtils.traceDebug(logger, traceOn -> {
+			LogFormatUtils.traceDebug(logger, () -> traceOn -> {
 				String formatted = LogFormatUtils.formatValue(result, !traceOn);
 				return "Resume with async result [" + formatted + "]";
 			});

@@ -213,7 +213,7 @@ public class MultipartHttpMessageWriter extends MultipartWriterSupport
 		mediaType = getMultipartMediaType(mediaType, boundary);
 		outputMessage.getHeaders().setContentType(mediaType);
 
-		LogFormatUtils.traceDebug(logger, traceOn -> Hints.getLogPrefix(hints) + "Encoding " +
+		LogFormatUtils.traceDebug(logger, () -> traceOn -> Hints.getLogPrefix(hints) + "Encoding " +
 				(isEnableLoggingRequestDetails() ?
 						LogFormatUtils.formatValue(map, !traceOn) :
 						"parts " + map.keySet() + " (content masked)"));

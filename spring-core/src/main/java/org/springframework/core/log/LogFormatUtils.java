@@ -17,6 +17,7 @@
 package org.springframework.core.log;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
@@ -107,10 +108,10 @@ public abstract class LogFormatUtils {
 	 * @param messageFactory function that accepts a boolean set to the value
 	 * of {@link Log#isTraceEnabled()}
 	 */
-	public static void traceDebug(Log logger, Function<Boolean, String> messageFactory) {
+	public static void traceDebug(Log logger, Supplier<Function<Boolean, String>> messageFactory) {
 		if (logger.isDebugEnabled()) {
 			boolean traceEnabled = logger.isTraceEnabled();
-			String logMessage = messageFactory.apply(traceEnabled);
+			String logMessage = messageFactory.get().apply(traceEnabled);
 			if (traceEnabled) {
 				logger.trace(logMessage);
 			}

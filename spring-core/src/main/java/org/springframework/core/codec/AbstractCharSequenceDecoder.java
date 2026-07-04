@@ -178,7 +178,7 @@ public abstract class AbstractCharSequenceDecoder<T extends CharSequence> extend
 		try {
 			Charset charset = getCharset(mimeType);
 			T value = decodeInternal(dataBuffer, charset);
-			LogFormatUtils.traceDebug(logger, traceOn -> {
+			LogFormatUtils.traceDebug(logger, () ->traceOn -> {
 				String formatted = LogFormatUtils.formatValue(value, !traceOn);
 				return Hints.getLogPrefix(hints) + "Decoded " + formatted;
 			});

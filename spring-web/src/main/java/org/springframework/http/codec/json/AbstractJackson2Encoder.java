@@ -329,7 +329,7 @@ public abstract class AbstractJackson2Encoder extends Jackson2CodecSupport imple
 
 	private void logValue(@Nullable Map<String, Object> hints, Object value) {
 		if (!Hints.isLoggingSuppressed(hints)) {
-			LogFormatUtils.traceDebug(logger, traceOn -> {
+			LogFormatUtils.traceDebug(logger, () -> traceOn -> {
 				String formatted = LogFormatUtils.formatValue(value, !traceOn);
 				return Hints.getLogPrefix(hints) + "Encoding [" + formatted + "]";
 			});

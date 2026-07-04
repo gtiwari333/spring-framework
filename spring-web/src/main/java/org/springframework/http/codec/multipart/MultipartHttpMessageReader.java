@@ -120,7 +120,7 @@ public class MultipartHttpMessageReader extends LoggingCodecSupport
 						((Map<String, Collection<Part>>) map).values()
 								.forEach(parts -> parts.forEach(part -> part.delete().subscribe())))
 				.doOnNext(map ->
-					LogFormatUtils.traceDebug(logger, traceOn -> Hints.getLogPrefix(hints) + "Parsed " +
+					LogFormatUtils.traceDebug(logger, () -> traceOn -> Hints.getLogPrefix(hints) + "Parsed " +
 							(isEnableLoggingRequestDetails() ?
 									LogFormatUtils.formatValue(map, !traceOn) :
 									"parts " + map.keySet() + " (content masked)"))
