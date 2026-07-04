@@ -79,8 +79,8 @@ public abstract class OncePerRequestFilter extends GenericFilterBean {
 	public static final String ALREADY_FILTERED_SUFFIX = ".FILTERED";
 
 	/**
-	 * Caches the concatenated value which represents name of the request attribute that identifies that a request
-	 * is already filtered.
+	 * Caches the concatenated value which represents name of the request attribute
+	 * that identifies that a request is already filtered.
 	 */
 	private volatile @Nullable String alreadyFilteredAttributeName;
 
