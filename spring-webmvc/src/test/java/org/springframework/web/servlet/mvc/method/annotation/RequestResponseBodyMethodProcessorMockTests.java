@@ -366,12 +366,14 @@ class RequestResponseBodyMethodProcessorMockTests {
 		String body = "Foo";
 		servletRequest.setAttribute(HandlerMapping.PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE,
 				Set.of(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML));
+		servletRequest.addHeader("Accept", MediaType.APPLICATION_JSON_VALUE);
 
 		given(stringMessageConverter.canWrite(String.class, MediaType.APPLICATION_JSON)).willReturn(true);
 
 		processor.handleReturnValue(body, returnTypeString, mavContainer, webRequest);
 
 		assertThat(mavContainer.isRequestHandled()).isTrue();
+		verify(stringMessageConverter).write(eq(body), eq(MediaType.APPLICATION_JSON), isA(HttpOutputMessage.class));
 	}
 
 	@Test
