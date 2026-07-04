@@ -116,11 +116,12 @@ public abstract class LogFormatUtils {
 	 *     return "Writing [" + formatted + "]";
 	 * });
 	 * </pre>
-	 * @param logger the logger to use to log the message
+	 *
+	 * @param logger         the logger to use to log the message
 	 * @param messageFactory a supplier of a function that accepts a boolean
-	 * set to the value of {@link Log#isTraceEnabled()} and returns the
-	 * formatted log message
-	 * @since 7.2
+	 *                       set to the value of {@link Log#isTraceEnabled()} and returns the
+	 *                       formatted log message
+	 * @since TODO
 	 */
 	public static void traceDebug(Log logger, Supplier<Function<Boolean, String>> messageFactory) {
 		if (logger.isDebugEnabled()) {
@@ -144,10 +145,10 @@ public abstract class LogFormatUtils {
 	 * @param logger         the logger to use to log the message
 	 * @param messageFactory function that accepts a boolean set to the value
 	 *                       of {@link Log#isTraceEnabled()}
-	 * @deprecated since XXX in favor of {@link #traceDebug(Log, Supplier)}
+	 * @deprecated since TODO in favor of {@link #traceDebug(Log, Supplier)}
 	 * which avoids unconditional lambda allocation when debug logging is off
 	 */
-	@Deprecated(forRemoval = false)
+	@Deprecated(since = "TODO", forRemoval = false)
 	public static void traceDebug(Log logger, Function<Boolean, String> messageFactory) {
 		if (logger.isDebugEnabled()) {
 			boolean traceEnabled = logger.isTraceEnabled();
