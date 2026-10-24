@@ -150,7 +150,7 @@ public class HandlerFunctionAdapter implements HandlerAdapter, Ordered {
 	private @Nullable ServerResponse handleAsync(WebAsyncManager asyncManager) throws Exception {
 		Object result = asyncManager.getConcurrentResult();
 		asyncManager.clearConcurrentResult();
-		LogFormatUtils.traceDebug(logger, traceOn -> {
+		LogFormatUtils.traceDebug(logger, () -> traceOn -> {
 			String formatted = LogFormatUtils.formatValue(result, !traceOn);
 			return "Resume with async result [" + formatted + "]";
 		});

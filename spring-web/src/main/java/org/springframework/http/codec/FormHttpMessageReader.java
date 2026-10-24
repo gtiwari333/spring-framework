@@ -142,7 +142,7 @@ public class FormHttpMessageReader extends LoggingCodecSupport
 	}
 
 	private void logFormData(MultiValueMap<String, String> formData, Map<String, Object> hints) {
-		LogFormatUtils.traceDebug(logger, traceOn -> Hints.getLogPrefix(hints) + "Read " +
+		LogFormatUtils.traceDebug(logger, () -> traceOn -> Hints.getLogPrefix(hints) + "Read " +
 				(isEnableLoggingRequestDetails() ?
 						LogFormatUtils.formatValue(formData, !traceOn) :
 						"form fields " + formData.keySet() + " (content masked)"));

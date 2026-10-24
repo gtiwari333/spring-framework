@@ -158,7 +158,7 @@ public class Jaxb2XmlDecoder extends AbstractDecoder<Object> {
 
 		return splitEvents.map(events -> {
 			Object value = unmarshal(events, outputClass);
-			LogFormatUtils.traceDebug(logger, traceOn -> {
+			LogFormatUtils.traceDebug(logger, () -> traceOn -> {
 				String formatted = LogFormatUtils.formatValue(value, !traceOn);
 				return Hints.getLogPrefix(hints) + "Decoded [" + formatted + "]";
 			});

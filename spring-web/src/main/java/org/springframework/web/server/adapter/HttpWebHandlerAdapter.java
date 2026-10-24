@@ -305,7 +305,7 @@ public class HttpWebHandlerAdapter extends WebHandlerDecorator implements HttpHa
 		}
 		ServerWebExchange exchange = createExchange(request, response);
 
-		LogFormatUtils.traceDebug(logger, traceOn ->
+		LogFormatUtils.traceDebug(logger, () -> traceOn ->
 				exchange.getLogPrefix() + formatRequest(exchange.getRequest()) +
 						(traceOn ? ", headers=" + formatHeaders(exchange.getRequest().getHeaders()) : ""));
 
@@ -344,7 +344,7 @@ public class HttpWebHandlerAdapter extends WebHandlerDecorator implements HttpHa
 	}
 
 	private void logResponse(ServerWebExchange exchange) {
-		LogFormatUtils.traceDebug(logger, traceOn -> {
+		LogFormatUtils.traceDebug(logger, () -> traceOn -> {
 			HttpStatusCode status = exchange.getResponse().getStatusCode();
 			return exchange.getLogPrefix() + "Completed " + (status != null ? status : "200 OK") +
 					(traceOn ? ", headers=" + formatHeaders(exchange.getResponse().getHeaders()) : "");

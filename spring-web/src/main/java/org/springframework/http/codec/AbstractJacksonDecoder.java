@@ -242,7 +242,7 @@ public abstract class AbstractJacksonDecoder<T extends ObjectMapper> extends Jac
 
 	private void logValue(@Nullable Object value, @Nullable Map<String, Object> hints) {
 		if (!Hints.isLoggingSuppressed(hints)) {
-			LogFormatUtils.traceDebug(logger, traceOn -> {
+			LogFormatUtils.traceDebug(logger, () -> traceOn -> {
 				String formatted = LogFormatUtils.formatValue(value, !traceOn);
 				return Hints.getLogPrefix(hints) + "Decoded [" + formatted + "]";
 			});

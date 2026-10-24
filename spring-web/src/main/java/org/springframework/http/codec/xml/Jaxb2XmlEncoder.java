@@ -113,7 +113,7 @@ public class Jaxb2XmlEncoder extends AbstractSingleValueEncoder<Object> {
 			ResolvableType valueType, @Nullable MimeType mimeType, @Nullable Map<String, Object> hints) {
 
 		if (!Hints.isLoggingSuppressed(hints)) {
-			LogFormatUtils.traceDebug(logger, traceOn -> {
+			LogFormatUtils.traceDebug(logger, () -> traceOn -> {
 				String formatted = LogFormatUtils.formatValue(value, !traceOn);
 				return Hints.getLogPrefix(hints) + "Encoding [" + formatted + "]";
 			});

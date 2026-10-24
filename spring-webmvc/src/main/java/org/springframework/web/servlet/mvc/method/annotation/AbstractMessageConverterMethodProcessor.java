@@ -456,7 +456,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 							(Class<? extends HttpMessageConverter<?>>) converter.getClass(), inputMessage, outputMessage);
 					if (body != null) {
 						Object theBody = body;
-						LogFormatUtils.traceDebug(logger, traceOn ->
+						LogFormatUtils.traceDebug(logger, () -> traceOn ->
 								"Writing [" + LogFormatUtils.formatValue(theBody, !traceOn) + "]");
 						addContentDispositionHeader(inputMessage, outputMessage);
 						switch (converterTypeToUse) {
