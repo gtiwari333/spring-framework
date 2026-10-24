@@ -26,6 +26,8 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.web.context.request.async.WebAsyncManager;
 import org.springframework.web.context.request.async.WebAsyncUtils;
 import org.springframework.web.util.WebUtils;
@@ -76,6 +78,11 @@ public abstract class OncePerRequestFilter extends GenericFilterBean {
 	 */
 	public static final String ALREADY_FILTERED_SUFFIX = ".FILTERED";
 
+	/**
+	 * Caches the concatenated value which represents name of the request attribute
+	 * that identifies that a request is already filtered.
+	 */
+	private volatile @Nullable String alreadyFilteredAttributeName;
 
 	/**
 	 * This {@code doFilter} implementation stores a request attribute for
@@ -166,11 +173,16 @@ public abstract class OncePerRequestFilter extends GenericFilterBean {
 	 * @see #ALREADY_FILTERED_SUFFIX
 	 */
 	protected String getAlreadyFilteredAttributeName() {
-		String name = getFilterName();
-		if (name == null) {
-			name = getClass().getName();
+		String cached = this.alreadyFilteredAttributeName;
+		if (cached == null) {
+			String name = getFilterName();
+			if (name == null) {
+				name = getClass().getName();
+			}
+			this.alreadyFilteredAttributeName = name + ALREADY_FILTERED_SUFFIX;
+			cached = this.alreadyFilteredAttributeName;
 		}
-		return name + ALREADY_FILTERED_SUFFIX;
+		return cached;
 	}
 
 	/**
